@@ -2,6 +2,7 @@ require('dotenv').config()
 
 const puppeteer = require('puppeteer')
 const winston = require('winston');
+const fs = require('fs');
 
 const timezoned = () => {
     var options = {
@@ -47,18 +48,18 @@ async function savepage() {
     await page.goto('https://kthb-hv.lib.kth.se/smartsign/timeeditjq', {
         waitUntil: 'networkidle0'
     });
-    await page.screenshot({path: 'timeeditjq.png'});
+    await page.screenshot({path: process.env.WWWIMAGEDIR + 'timeeditjq.png'});
 
     await page.goto('https://kthb-hv.lib.kth.se/smartsign/grbjq', {
         waitUntil: 'networkidle0'
     });
-    await page.screenshot({path: 'grbjq.png'});
+    await page.screenshot({path: process.env.WWWIMAGEDIR + 'grbjq.png'});
 
     await page.goto('https://kthb-hv.lib.kth.se/smartsign/aff', {
         waitUntil: 'networkidle0'
     });
     
-    await page.screenshot({path: 'aff.png'});
+    await page.screenshot({path: process.env.WWWIMAGEDIR + 'aff.png'});
 
     await browser.close();
 
