@@ -45,11 +45,15 @@ async function savepage() {
         deviceScaleFactor: 1,
     });
 
-    await page.goto('https://kthb-hv.lib.kth.se/smartsign/timeeditjq', {
-        waitUntil: 'networkidle0'
-    });
-    await page.screenshot({path: process.env.WWWIMAGEDIR + 'timeeditjq.jpg', quality: 85});
-
+    try {
+        await page.goto('https://kthb-hv.lib.kth.se/smartsign/timeeditjq', {
+            waitUntil: 'networkidle0'
+        });
+        await page.screenshot({path: process.env.WWWIMAGEDIR + 'timeeditjq.jpg', quality: 85});
+    } catch(error) {
+        logger.log('error',error);
+    }
+    
     await page.goto('https://kthb-hv.lib.kth.se/smartsign/grbjq', {
         waitUntil: 'networkidle0'
     });
