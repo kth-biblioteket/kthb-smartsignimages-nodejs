@@ -48,18 +48,18 @@ async function savepage() {
     await page.goto('https://kthb-hv.lib.kth.se/smartsign/timeeditjq', {
         waitUntil: 'networkidle0'
     });
-    await page.screenshot({path: process.env.WWWIMAGEDIR + 'timeeditjq.png'});
+    await page.screenshot({path: process.env.WWWIMAGEDIR + 'timeeditjq.jpg', quality: 85});
 
     await page.goto('https://kthb-hv.lib.kth.se/smartsign/grbjq', {
         waitUntil: 'networkidle0'
     });
-    await page.screenshot({path: process.env.WWWIMAGEDIR + 'grbjq.png'});
+    await page.screenshot({path: process.env.WWWIMAGEDIR + 'grbjq.jpg', quality: 85});
 
     await page.goto('https://kthb-hv.lib.kth.se/smartsign/aff', {
         waitUntil: 'networkidle0'
     });
     
-    await page.screenshot({path: process.env.WWWIMAGEDIR + 'aff.png'});
+    await page.screenshot({path: process.env.WWWIMAGEDIR + 'aff.jpg', quality: 85});
 
     await browser.close();
 
