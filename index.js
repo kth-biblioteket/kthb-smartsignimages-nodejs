@@ -46,20 +46,20 @@ async function savepage() {
     });
 
     try {
-        await page.goto('https://kthb-hv.lib.kth.se/smartsign/timeeditjq', {
+        await page.goto('https://apps.lib.kth.se/smartsign/timeeditjq', {
             waitUntil: 'networkidle0'
         });
         await page.screenshot({path: process.env.WWWIMAGEDIR + 'timeeditjq.jpg', quality: 85});
     } catch(error) {
         logger.log('error',error);
     }
-    
-    await page.goto('https://kthb-hv.lib.kth.se/smartsign/grbjq', {
+
+    await page.goto('https://apps.lib.kth.se/smartsign/grbjq', {
         waitUntil: 'networkidle0'
     });
     await page.screenshot({path: process.env.WWWIMAGEDIR + 'grbjq.jpg', quality: 85});
 
-    await page.goto('https://kthb-hv.lib.kth.se/smartsign/aff', {
+    await page.goto('https://apps.lib.kth.se/smartsign/aff', {
         waitUntil: 'networkidle0'
     });
     
