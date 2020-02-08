@@ -5,7 +5,7 @@ const winston = require('winston');
 const fs = require('fs');
 
 const timezoned = () => {
-    var options = {
+    let options = {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
@@ -25,15 +25,15 @@ const logger = winston.createLogger({
           }),
         winston.format.json()
     ),
-    defaultMeta: { service: 'user-service' },
+    defaultMeta: { service: process.env.SERVICNAME },
     transports: [
-      new winston.transports.File({ filename: 'combined.log' })
+      new winston.transports.File({ filename: process.env.LOGFILENAME })
     ]
 });
- 
-async function savepage() {
+
+async function savepage(url) {
     if(process.env.DEBUG.indexOf("true") !== -1 ) {
-        logger.log('info','Begin');
+        logger.log('info','Begin ' + url);
     }
     
     const browser = await puppeteer.launch({ headless: true });
@@ -46,34 +46,33 @@ async function savepage() {
     });
 
     try {
-        await page.goto('https://apps.lib.kth.se/smartsign/timeeditjq', {
-            waitUntil: 'networkidle0'
+        await page.goto(url, {
+            waitUntil: 'networkidle0', timeout: process.env.TIMEOUT
         });
-        await page.screenshot({path: process.env.WWWIMAGEDIR + 'timeeditjq.jpg', quality: 85});
-    } catch(error) {
+        let n = url.lastIndexOf("/");
+        let imagefilename = url.substr(n + 1, url.length -n +1) + '.jpg';
+        await page.screenshot({path: process.env.WWWIMAGEDIR + imagefilename, quality: parseInt(process.env.IMAGEQUALITY)});
+    } 
+    catch(error) {
+        console.log(error)
         logger.log('error',error);
     }
-
-    await page.goto('https://apps.lib.kth.se/smartsign/grbjq', {
-        waitUntil: 'networkidle0'
-    });
-    await page.screenshot({path: process.env.WWWIMAGEDIR + 'grbjq.jpg', quality: 85});
-
-    await page.goto('https://apps.lib.kth.se/smartsign/aff', {
-        waitUntil: 'networkidle0'
-    });
-    
-    await page.screenshot({path: process.env.WWWIMAGEDIR + 'aff.jpg', quality: 85});
 
     await browser.close();
 
     if(process.env.DEBUG.indexOf("true") !== -1 ) {
-        logger.log('info','End');
+        logger.log('info','End ' + url);
     }
 
-    savepage()
+    setTimeout(function() {
+        savepage(url);
+    }, process.env.INTERVAL)
+    
 }
 
 logger.log('info','Service started');
 
-savepage()
+let urls_to_save = process.env.URLS_TO_SAVE.split(",");
+urls_to_save.forEach(function(url) {
+    savepage(url);
+})
