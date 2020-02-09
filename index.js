@@ -56,6 +56,8 @@ async function savepage(url) {
     catch(error) {
         console.log(error)
         logger.log('error',error);
+        browser.close();
+        process.exit();
     }
 
     await browser.close();
