@@ -36,16 +36,24 @@ async function savepage(url) {
         logger.log('info','Begin ' + url);
     }
     
-    const browser = await puppeteer.launch({ headless: true });
-    const page = await browser.newPage();
-
-    await page.setViewport({
-        width: 1080,
-        height: 1920,
-        deviceScaleFactor: 1,
-    });
+    try {
+        const browser = await puppeteer.launch({ headless: true });
+    }
+    catch(error) {
+        console.log(error)
+        logger.log('error',error);
+        process.exit();
+    }
 
     try {
+        const page = await browser.newPage();
+
+        await page.setViewport({
+            width: 1080,
+            height: 1920,
+            deviceScaleFactor: 1,
+        });
+        
         await page.goto(url, {
             waitUntil: 'networkidle0', timeout: process.env.TIMEOUT
         });
