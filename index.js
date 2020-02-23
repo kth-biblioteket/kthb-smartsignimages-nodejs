@@ -38,14 +38,6 @@ async function savepage(url) {
     
     try {
         const browser = await puppeteer.launch({ headless: true });
-    }
-    catch(error) {
-        console.log(error)
-        logger.log('error',error);
-        process.exit();
-    }
-
-    try {
         const page = await browser.newPage();
 
         await page.setViewport({
