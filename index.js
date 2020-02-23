@@ -49,9 +49,14 @@ async function savepage(url) {
         await page.goto(url, {
             waitUntil: 'networkidle0', timeout: process.env.TIMEOUT
         });
+        
         let n = url.lastIndexOf("/");
         let imagefilename = url.substr(n + 1, url.length -n +1) + '.jpg';
+        
         await page.screenshot({path: process.env.WWWIMAGEDIR + imagefilename, quality: parseInt(process.env.IMAGEQUALITY)});
+        
+        await browser.close();
+    
     } 
     catch(error) {
         console.log(error)
@@ -59,8 +64,6 @@ async function savepage(url) {
         browser.close();
         process.exit();
     }
-
-    await browser.close();
 
     if(process.env.DEBUG.indexOf("true") !== -1 ) {
         logger.log('info','End ' + url);
